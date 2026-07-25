@@ -46,29 +46,6 @@
 
 ---
 
-## 🔄 Alur Kerja Sistem
-EMPLOYEE
-Ajukan Cuti → Pending
-└─ Manager: Setuju/Tolak
-└─ Setuju → HRD: Setuju/Tolak
-└─ Setuju → ✅ Approved
-
-MANAGER
-Ajukan Cuti → Pending
-└─ HRD: Setuju/Tolak → ✅ Approved
-
-HRD
-├─ Approve final cuti karyawan (setelah manager)
-├─ Approve cuti manager (langsung)
-└─ Cetak laporan PDF tahunan
-
-ADMIN
-├─ Kelola pengguna (CRUD)
-├─ Atur kuota cuti tahunan
-└─ Aktif/nonaktifkan akun
-
----
-
 ## 🖥️ Persyaratan Sistem
 
 - **PHP** >= 8.2
@@ -147,40 +124,6 @@ php artisan serve
 | 👷 Employee 1 | employee@leavemgmt.com | password |
 | 👷 Employee 2 | dewi@leavemgmt.com | password |
 | 👷 Employee 3 | raka@leavemgmt.com | password |
-
----
-
-## 📁 Struktur Folder
-cuti_app/
-├── app/
-│ ├── Console/Commands/
-│ │ └── CreateAnnualQuotas.php # Command auto-buat kuota tahunan
-│ ├── Http/
-│ │ ├── Controllers/
-│ │ │ ├── AuthController.php # Login & logout
-│ │ │ ├── EmployeeController.php # Dashboard, ajukan & lihat cuti
-│ │ │ ├── ManagerController.php # Approve karyawan + cuti sendiri
-│ │ │ ├── HrdController.php # Approve final + laporan PDF
-│ │ │ └── AdminController.php # CRUD pengguna & kuota
-│ │ └── Middleware/
-│ │ └── RoleMiddleware.php # Guard akses per role
-│ └── Models/
-│ ├── User.php # Model pengguna
-│ ├── LeaveApplication.php # Model pengajuan cuti
-│ └── LeaveQuota.php # Model kuota tahunan
-├── database/
-│ ├── migrations/ # Struktur tabel database
-│ └── seeders/
-│ └── DatabaseSeeder.php # Data demo lengkap
-├── resources/views/
-│ ├── auth/ # Halaman login
-│ ├── layouts/ # Layout utama + sidebar
-│ ├── employee/ # Views karyawan
-│ ├── manager/ # Views manager
-│ ├── hrd/ # Views HRD + PDF
-│ └── admin/ # Views admin
-└── routes/
-└── web.php # Semua route
 
 ---
 
