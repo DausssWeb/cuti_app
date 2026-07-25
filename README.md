@@ -1,19 +1,32 @@
-# 🗓️ Leave Management System — Laravel 12
+<div align="center">
 
-Sistem Manajemen Cuti Karyawan berbasis web menggunakan **Laravel 12** dengan 4 role:
-**Employee**, **Manager**, **HRD**, dan **Admin**.
+<img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="300" alt="Laravel Logo">
+
+# 🗓️ Leave Management System
+
+![Laravel](https://img.shields.io/badge/Laravel_12-%23FF2D20.svg?style=for-the-badge&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP_8.2+-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap_5.3-%238511FA.svg?style=for-the-badge&logo=bootstrap&logoColor=white)
+
+**Sistem Manajemen Cuti Karyawan berbasis web dengan 4 role:**
+**Employee · Manager · HRD · Admin**
+
+</div>
 
 ---
 
 ## 📋 Daftar Isi
-1. [Fitur Utama](#fitur-utama)
-2. [Alur Kerja Sistem](#alur-kerja-sistem)
-3. [Persyaratan Sistem](#persyaratan-sistem)
-4. [Instalasi](#instalasi)
-5. [Akun Demo](#akun-demo)
-6. [Struktur Folder](#struktur-folder)
-7. [Penjelasan Role & Fitur](#penjelasan-role--fitur)
-8. [Validasi Bisnis](#validasi-bisnis)
+1. [Fitur Utama](#-fitur-utama)
+2. [Alur Kerja Sistem](#-alur-kerja-sistem)
+3. [Persyaratan Sistem](#-persyaratan-sistem)
+4. [Instalasi](#-instalasi)
+5. [Akun Demo](#-akun-demo)
+6. [Struktur Folder](#-struktur-folder)
+7. [Penjelasan Role & Fitur](#-penjelasan-role--fitur)
+8. [Validasi Bisnis](#-validasi-bisnis)
+9. [Command Tambahan](#-command-tambahan)
+10. [Teknologi](#-teknologi-yang-digunakan)
 
 ---
 
@@ -21,42 +34,38 @@ Sistem Manajemen Cuti Karyawan berbasis web menggunakan **Laravel 12** dengan 4 
 
 | Fitur | Deskripsi |
 |-------|-----------|
-| Multi-Role Auth | Employee, Manager, HRD, Admin |
-| Kuota Cuti Tahunan | 12 hari/tahun per karyawan (configurable) |
-| Cuti Sakit | Tidak terbatas, dapat upload surat dokter |
-| Alur Persetujuan 2-tahap | Manager → HRD (untuk karyawan) / HRD langsung (untuk manager) |
-| Kalkulasi Hari Kerja | Otomatis, tidak menghitung Sabtu & Minggu |
-| Cek Tumpang Tindih | Tidak bisa ajukan cuti jika ada yang aktif di tanggal sama |
-| Cetak Laporan PDF | HRD bisa download laporan cuti per tahun (landscape A4) |
-| Manajemen Pengguna | Admin dapat CRUD pengguna dan atur kuota |
-| Dashboard Real-time | Statistik cuti per role |
+| 🔐 Multi-Role Auth | Employee, Manager, HRD, Admin |
+| 📅 Kuota Cuti Tahunan | 12 hari/tahun per karyawan (configurable) |
+| 🏥 Cuti Sakit | Tidak terbatas, bisa upload surat dokter |
+| ✅ Alur Persetujuan 2-tahap | Manager → HRD (karyawan) / HRD langsung (manager) |
+| 📆 Kalkulasi Hari Kerja | Otomatis, tidak menghitung Sabtu & Minggu |
+| 🚫 Cek Tumpang Tindih | Tidak bisa ajukan cuti jika ada yang aktif di tanggal sama |
+| 📄 Cetak Laporan PDF | HRD bisa download laporan cuti per tahun (landscape A4) |
+| 👥 Manajemen Pengguna | Admin dapat CRUD pengguna dan atur kuota |
+| 📊 Dashboard Real-time | Statistik cuti per role |
 
 ---
 
 ## 🔄 Alur Kerja Sistem
+EMPLOYEE
+Ajukan Cuti → Pending
+└─ Manager: Setuju/Tolak
+└─ Setuju → HRD: Setuju/Tolak
+└─ Setuju → ✅ Approved
 
-```
-EMPLOYEE:
-  Ajukan Cuti → Pending → [Manager: Setuju/Tolak]
-                              ↓ Setuju
-                          Manager Approved → [HRD: Setuju/Tolak]
-                                                 ↓ Setuju
-                                             HRD Approved ✅
+MANAGER
+Ajukan Cuti → Pending
+└─ HRD: Setuju/Tolak → ✅ Approved
 
-MANAGER:
-  Ajukan Cuti → Pending → [HRD: Setuju/Tolak] → HRD Approved ✅
-  (Tanpa perlu persetujuan manager lain)
+HRD
+├─ Approve final cuti karyawan (setelah manager)
+├─ Approve cuti manager (langsung)
+└─ Cetak laporan PDF tahunan
 
-HRD:
-  - Menyetujui final cuti karyawan (setelah manager)
-  - Menyetujui cuti manager (langsung)
-  - Mencetak laporan PDF tahunan
-
-ADMIN:
-  - Mengelola pengguna (CRUD)
-  - Mengatur kuota cuti tahunan
-  - Aktif/nonaktifkan akun
-```
+ADMIN
+├─ Kelola pengguna (CRUD)
+├─ Atur kuota cuti tahunan
+└─ Aktif/nonaktifkan akun
 
 ---
 
@@ -72,74 +81,58 @@ ADMIN:
 
 ## 🚀 Instalasi
 
-### Langkah 1 – Clone / Copy Proyek
-
+**1. Clone repository**
 ```bash
-# Salin folder app_project ke direktori web Anda
-# XAMPP  : C:/xampp/htdocs/app_project
-# Laragon: C:/laragon/www/app_project
+git clone https://github.com/DausssWeb/cuti_app.git
+cd cuti_app
 ```
 
-### Langkah 2 – Install Dependensi
-
+**2. Install dependencies**
 ```bash
-cd app_project
 composer install
 ```
 
-### Langkah 3 – Konfigurasi Environment
-
+**3. Setup environment**
 ```bash
 cp .env.example .env
 php artisan key:generate
 ```
 
-Edit file `.env`:
-
+**4. Konfigurasi database** — edit file `.env`:
 ```env
 APP_NAME="Leave Management System"
-APP_URL=http://localhost/app_project/public
+APP_URL=http://localhost/cuti_app/public
 
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=leave_management
 DB_USERNAME=root
-DB_PASSWORD=          # kosongkan jika XAMPP default
+DB_PASSWORD=
 ```
 
-### Langkah 4 – Buat Database
+**5. Buat database**
 
 Buka **phpMyAdmin** → buat database baru bernama `leave_management`
 
-### Langkah 5 – Migrasi & Seeder
-
+**6. Migrasi & Seeder**
 ```bash
 php artisan migrate --seed
 ```
 
-Perintah ini akan:
-- Membuat semua tabel database
-- Mengisi data akun demo (admin, HRD, manager, 5 karyawan)
-- Membuat kuota cuti awal
-
-### Langkah 6 – Storage Link
-
+**7. Storage link**
 ```bash
 php artisan storage:link
 ```
 
-### Langkah 7 – Jalankan Server
-
-**Dengan `php artisan serve`:**
+**8. Jalankan aplikasi**
 ```bash
+# Dengan artisan
 php artisan serve
 # Akses: http://127.0.0.1:8000
-```
 
-**Dengan XAMPP/Laragon:**
-```
-http://localhost/app_project/public
+# Dengan XAMPP/Laragon
+# Akses: http://localhost/cuti_app/public
 ```
 
 ---
@@ -148,127 +141,73 @@ http://localhost/app_project/public
 
 | Role | Email | Password |
 |------|-------|----------|
-| Admin | admin@leavemgmt.com | password |
-| HRD | hrd@leavemgmt.com | password |
-| Manager | manager@leavemgmt.com | password |
-| Employee | employee@leavemgmt.com | password |
-| Employee 2 | dewi@leavemgmt.com | password |
-| Employee 3 | raka@leavemgmt.com | password |
+| 🔧 Admin | admin@leavemgmt.com | password |
+| 👩‍💼 HRD | hrd@leavemgmt.com | password |
+| 🧑‍💼 Manager | manager@leavemgmt.com | password |
+| 👷 Employee 1 | employee@leavemgmt.com | password |
+| 👷 Employee 2 | dewi@leavemgmt.com | password |
+| 👷 Employee 3 | raka@leavemgmt.com | password |
 
 ---
 
 ## 📁 Struktur Folder
-
-```
-app_project/
+cuti_app/
 ├── app/
-│   ├── Console/Commands/
-│   │   └── CreateAnnualQuotas.php       # Command auto-buat kuota tahunan
-│   ├── Http/
-│   │   ├── Controllers/
-│   │   │   ├── AuthController.php       # Login & logout
-│   │   │   ├── EmployeeController.php   # Dashboard, ajukan & lihat cuti
-│   │   │   ├── ManagerController.php    # Approve karyawan + cuti sendiri
-│   │   │   ├── HrdController.php        # Approve final + laporan PDF
-│   │   │   └── AdminController.php      # CRUD pengguna & kuota
-│   │   └── Middleware/
-│   │       └── RoleMiddleware.php        # Guard akses per role
-│   ├── Models/
-│   │   ├── User.php                     # Model pengguna + helper role & kuota
-│   │   ├── LeaveApplication.php         # Model pengajuan cuti
-│   │   └── LeaveQuota.php               # Model kuota tahunan per user
-│   └── Providers/
-│       └── AppServiceProvider.php
-├── bootstrap/
-│   └── app.php                          # Registrasi middleware Laravel 12
-├── config/
-│   ├── app.php
-│   ├── auth.php
-│   ├── database.php
-│   ├── dompdf.php                       # Konfigurasi PDF
-│   ├── filesystems.php
-│   └── session.php
+│ ├── Console/Commands/
+│ │ └── CreateAnnualQuotas.php # Command auto-buat kuota tahunan
+│ ├── Http/
+│ │ ├── Controllers/
+│ │ │ ├── AuthController.php # Login & logout
+│ │ │ ├── EmployeeController.php # Dashboard, ajukan & lihat cuti
+│ │ │ ├── ManagerController.php # Approve karyawan + cuti sendiri
+│ │ │ ├── HrdController.php # Approve final + laporan PDF
+│ │ │ └── AdminController.php # CRUD pengguna & kuota
+│ │ └── Middleware/
+│ │ └── RoleMiddleware.php # Guard akses per role
+│ └── Models/
+│ ├── User.php # Model pengguna
+│ ├── LeaveApplication.php # Model pengajuan cuti
+│ └── LeaveQuota.php # Model kuota tahunan
 ├── database/
-│   ├── migrations/
-│   │   ├── ..._create_users_table.php
-│   │   ├── ..._create_leave_quotas_table.php
-│   │   └── ..._create_leave_applications_table.php
-│   └── seeders/
-│       └── DatabaseSeeder.php           # Data demo lengkap
-├── public/
-│   ├── index.php
-│   └── .htaccess
+│ ├── migrations/ # Struktur tabel database
+│ └── seeders/
+│ └── DatabaseSeeder.php # Data demo lengkap
 ├── resources/views/
-│   ├── auth/
-│   │   └── login.blade.php              # Halaman login
-│   ├── layouts/
-│   │   ├── app.blade.php                # Layout utama + sidebar
-│   │   └── partials/
-│   │       └── sidebar-menu.blade.php   # Menu sidebar per role
-│   ├── employee/
-│   │   ├── dashboard.blade.php
-│   │   ├── index.blade.php              # Riwayat pengajuan
-│   │   ├── create.blade.php             # Form ajukan cuti
-│   │   └── show.blade.php               # Detail + timeline approval
-│   ├── manager/
-│   │   ├── dashboard.blade.php
-│   │   ├── employee-leaves.blade.php    # Daftar cuti karyawan
-│   │   ├── show-employee-leave.blade.php # Review + approve/reject
-│   │   ├── my-leaves.blade.php          # Riwayat cuti manager
-│   │   └── create-leave.blade.php       # Form cuti manager
-│   ├── hrd/
-│   │   ├── dashboard.blade.php
-│   │   ├── all-leaves.blade.php         # Semua pengajuan + filter
-│   │   ├── show-leave.blade.php         # Review + approve/reject HRD
-│   │   ├── report-form.blade.php        # Form generate PDF
-│   │   └── report-pdf.blade.php         # Template PDF laporan
-│   ├── admin/
-│   │   ├── dashboard.blade.php
-│   │   ├── users.blade.php              # List pengguna
-│   │   ├── create-user.blade.php
-│   │   └── edit-user.blade.php
-│   └── errors/
-│       └── 403.blade.php
+│ ├── auth/ # Halaman login
+│ ├── layouts/ # Layout utama + sidebar
+│ ├── employee/ # Views karyawan
+│ ├── manager/ # Views manager
+│ ├── hrd/ # Views HRD + PDF
+│ └── admin/ # Views admin
 └── routes/
-    ├── web.php                          # Semua route
-    └── console.php
-```
+└── web.php # Semua route
 
 ---
 
 ## 🎯 Penjelasan Role & Fitur
 
-### 👷 Employee (Karyawan)
+### 👷 Employee
 - ✅ Dashboard dengan info kuota cuti real-time
-- ✅ Ajukan **Cuti Tahunan** (maks 12 hari/tahun)
-- ✅ Ajukan **Cuti Sakit** (tidak terbatas, opsional surat dokter)
-- ✅ Lihat riwayat semua pengajuan beserta status
-- ✅ Lihat timeline approval (Manager → HRD)
+- ✅ Ajukan Cuti Tahunan (maks 12 hari/tahun)
+- ✅ Ajukan Cuti Sakit (tidak terbatas, opsional surat dokter)
+- ✅ Lihat riwayat & timeline approval
 - ❌ Tidak bisa melihat data karyawan lain
-- ❌ Tidak bisa approve cuti siapapun
 
 ### 🧑‍💼 Manager
-- ✅ Dashboard statistik pengajuan karyawan
-- ✅ Melihat & menyetujui/menolak pengajuan cuti **semua karyawan (employee)**
+- ✅ Melihat & approve/reject cuti semua karyawan
 - ✅ Wajib isi catatan saat menolak
 - ✅ Mengajukan cuti sendiri (langsung ke HRD)
-- ✅ Melihat riwayat cuti sendiri
-- ❌ Tidak melihat pengajuan sesama manager atau HRD
-- ❌ Tidak bisa approve cuti manager lain
+- ❌ Tidak bisa approve cuti sesama manager
 
 ### 👩‍💼 HRD
-- ✅ Dashboard ringkasan seluruh cuti
-- ✅ Melihat **semua** pengajuan (employee + manager) dengan filter
-- ✅ Approve/reject cuti karyawan **setelah manager approve**
-- ✅ Approve/reject cuti manager **langsung**
-- ✅ Saat approve → kuota cuti otomatis dikurangi
-- ✅ **Generate laporan PDF** (per tahun, filter jenis & status)
-- ✅ PDF berisi: ringkasan per karyawan + detail semua pengajuan
+- ✅ Melihat semua pengajuan dengan filter
+- ✅ Approve final cuti karyawan (setelah manager)
+- ✅ Approve cuti manager langsung
+- ✅ Generate laporan PDF per tahun
 
 ### 🔧 Admin
-- ✅ Dashboard statistik pengguna & cuti
-- ✅ Tambah/edit pengguna (employee, manager, HRD)
-- ✅ Atur **kuota cuti tahunan** per pengguna
+- ✅ CRUD pengguna (employee, manager, HRD)
+- ✅ Atur kuota cuti tahunan per pengguna
 - ✅ Aktifkan / nonaktifkan akun
 - ✅ Reset password pengguna
 
@@ -278,26 +217,23 @@ app_project/
 
 | Validasi | Keterangan |
 |----------|------------|
-| Kuota tahunan | Tidak bisa ajukan jika sisa kuota < hari yang diminta |
+| Kuota tahunan | Tidak bisa ajukan jika sisa kuota kurang |
 | Tanggal mulai | Tidak boleh sebelum hari ini |
-| Tanggal selesai | Tidak boleh sebelum tanggal mulai |
 | Hari kerja | Sabtu & Minggu tidak dihitung, min. 1 hari kerja |
-| Tumpang tindih | Cek jika ada cuti aktif di rentang tanggal sama |
-| Alasan | Minimal 10 karakter, maksimal 500 karakter |
-| Surat dokter | Format PDF/JPG/PNG, maksimal 2MB |
-| Akun nonaktif | Tidak bisa login |
+| Tumpang tindih | Cek cuti aktif di rentang tanggal sama |
+| Alasan | Min. 10 karakter, maks. 500 karakter |
+| Surat dokter | Format PDF/JPG/PNG, maks. 2MB |
 | Role access | Setiap role hanya akses menu yang sesuai |
-| Manager approve | Employee harus manager_approved sebelum HRD bisa approve |
-| Catatan tolak | Wajib isi catatan ketika menolak pengajuan |
+| Catatan tolak | Wajib isi catatan ketika menolak |
 
 ---
 
 ## 🔧 Command Tambahan
 
 ```bash
-# Buat kuota cuti tahunan untuk semua user (jalankan setiap awal tahun)
+# Buat kuota cuti tahunan untuk semua user
 php artisan app:create-annual-quotas
-php artisan app:create-annual-quotas 2026   # untuk tahun tertentu
+php artisan app:create-annual-quotas 2026
 
 # Bersihkan cache
 php artisan cache:clear
@@ -316,9 +252,29 @@ php artisan migrate:fresh --seed
 - **Bootstrap 5.3** — CSS Framework
 - **Bootstrap Icons 1.11** — Icon library
 - **barryvdh/laravel-dompdf** — Generate PDF
-- **Inter Font** (Google Fonts) — Typography
+- **Inter Font** — Typography
 - **MySQL** — Database
 
 ---
 
-*Dibuat untuk keperluan pembelajaran Laravel 12 — STMIK Mardira Indonesia*
+## 👤 Author
+
+<div align="center">
+
+**Faisal Rahmat Firdaus**
+
+[![GitHub](https://img.shields.io/badge/GitHub-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/DausssWeb)
+[![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?style=for-the-badge&logo=Instagram&logoColor=white)](https://instagram.com/rhmtfrdus._)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/faisal-rahmat-firdaus-453959207)
+
+</div>
+
+---
+
+<div align="center">
+
+*Dibuat untuk keperluan pembelajaran Laravel 12 — STMIK Mardira Indonesia* 🎓
+
+⭐ Jangan lupa kasih star kalau project ini bermanfaat!
+
+</div>
