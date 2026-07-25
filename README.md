@@ -48,8 +48,8 @@
 
 ## 🖥️ Persyaratan Sistem
 
-- **PHP** >= 8.2
-- **Composer** >= 2.x
+- **PHP**  8.2+
+- **Composer**  2.x
 - **MySQL** >= 8.0 (atau MariaDB >= 10.6)
 - **Web Server**: Apache (XAMPP/Laragon) atau Nginx
 - **Extension PHP**: pdo_mysql, mbstring, openssl, tokenizer, xml, fileinfo
